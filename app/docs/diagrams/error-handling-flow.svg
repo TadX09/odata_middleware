@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .node { fill: #e1d5e7; stroke: #9673a6; stroke-width: 2; rx: 8; ry: 8; }
+      .decision { fill: #fff2cc; stroke: #d6b656; stroke-width: 2; }
+      .process { fill: #ffe6cc; stroke: #d79b00; stroke-width: 2; rx: 8; ry: 8; }
+      .error { fill: #f8cecc; stroke: #b85450; stroke-width: 2; rx: 8; ry: 8; }
+      .success { fill: #d5e8d4; stroke: #82b366; stroke-width: 2; rx: 8; ry: 8; }
+      .text { font-family: Arial, sans-serif; font-size: 11px; text-anchor: middle; dominant-baseline: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 9px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Request -->
+  <rect x="50" y="180" width="80" height="40" class="node"/>
+  <text x="90" y="200" class="text">Request</text>
+  
+  <!-- Validation Decision -->
+  <polygon points="180,180 200,200 180,220 160,200" class="decision"/>
+  <text x="180" y="200" class="text">Validation?</text>
+  
+  <!-- Continue -->
+  <rect x="250" y="180" width="80" height="40" class="process"/>
+  <text x="290" y="200" class="text">Continue</text>
+  
+  <!-- 422 Error -->
+  <rect x="180" y="280" width="80" height="40" class="error"/>
+  <text x="220" y="300" class="text">422 Error</text>
+  
+  <!-- Execution Decision -->
+  <polygon points="370,180 390,200 370,220 350,200" class="decision"/>
+  <text x="370" y="200" class="text">Execution?</text>
+  
+  <!-- Return Success -->
+  <rect x="440" y="180" width="100" height="40" class="success"/>
+  <text x="490" y="200" class="text">Return Success</text>
+  
+  <!-- Error Type Decision -->
+  <polygon points="370" y="280" width="80" height="40" class="decision"/>
+  <text x="410" y="300" class="text">Error Type?</text>
+  
+  <!-- Error Types -->
+  <rect x="480" y="50" width="80" height="30" class="error"/>
+  <text x="520" y="65" class="text">401 Auth Error</text>
+  
+  <rect x="480" y="100" width="80" height="30" class="error"/>
+  <text x="520" y="115" class="text">403 Permission Error</text>
+  
+  <rect x="480" y="150" width="80" height="30" class="error"/>
+  <text x="520" y="165" class="text">404 Not Found</text>
+  
+  <rect x="480" y="200" width="80" height="30" class="error"/>
+  <text x="520" y="215" class="text">500+ Server Error</text>
+  
+  <!-- Client -->
+  <rect x="580" y="125" width="80" height="40" class="node"/>
+  <text x="620" y="145" class="text">Client</text>
+  
+  <!-- Arrows -->
+  <line x1="130" y1="200" x2="160" y2="200" class="arrow"/>
+  <line x1="200" y1="180" x2="250" y2="180" class="arrow"/>
+  <line x1="200" y1="220" x2="220" y2="280" class="arrow"/>
+  <line x1="330" y1="200" x2="350" y2="200" class="arrow"/>
+  <line x1="370" y1="180" x2="440" y2="180" class="arrow"/>
+  <line x1="370" y1="220" x2="410" y2="280" class="arrow"/>
+  
+  <!-- Error type arrows -->
+  <line x1="410" y1="260" x2="480" y2="65" class="arrow"/>
+  <line x1="410" y1="280" x2="480" y2="115" class="arrow"/>
+  <line x1="410" y1="300" x2="480" y2="165" class="arrow"/>
+  <line x1="410" y1="320" x2="480" y2="215" class="arrow"/>
+  
+  <!-- To client -->
+  <line x1="220" y1="320" x2="580" y2="145" class="arrow"/>
+  <line x1="490" y1="220" x2="580" y2="145" class="arrow"/>
+  <line x1="560" y1="65" x2="580" y2="145" class="arrow"/>
+  <line x1="560" y1="115" x2="580" y2="145" class="arrow"/>
+  <line x1="560" y1="165" x2="580" y2="145" class="arrow"/>
+  <line x1="560" y1="215" x2="580" y2="145" class="arrow"/>
+  
+  <!-- Labels -->
+  <text x="175" y="170" class="label">Validate</text>
+  <text x="195" y="270" class="label">Fail</text>
+  <text x="335" y="170" class="label">Execute</text>
+  <text x="355" y="270" class="label">Fail</text>
+  <text x="395" y="45" class="label">Auth</text>
+  <text x="395" y="95" class="label">Permission</text>
+  <text x="395" y="145" class="label">Not Found</text>
+  <text x="395" y="195" class="label">Server</text>
+</svg> 

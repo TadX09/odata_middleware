@@ -1,0 +1,15 @@
+fastapi
+trino
+hypercorn
+SQLAlchemy
+SQLAlchemy-Utils
+sqlalchemy-trino
+pandas
+pymssql
+pytest
+pytest-mock
+dicttoxml
+google-cloud-logging
+pyodbc
+requests
+python-dotenv

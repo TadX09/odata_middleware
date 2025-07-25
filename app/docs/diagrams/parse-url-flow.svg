@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="700" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .node { fill: #e1d5e7; stroke: #9673a6; stroke-width: 2; rx: 8; ry: 8; }
+      .process { fill: #ffe6cc; stroke: #d79b00; stroke-width: 2; rx: 8; ry: 8; }
+      .response { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 2; rx: 8; ry: 8; }
+      .text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- OData URL -->
+  <rect x="50" y="80" width="100" height="40" class="node"/>
+  <text x="100" y="100" class="text">OData URL</text>
+  
+  <!-- Parse Components -->
+  <rect x="180" y="80" width="120" height="40" class="process"/>
+  <text x="240" y="100" class="text">Parse Components</text>
+  
+  <!-- Extract Service Info -->
+  <rect x="330" y="80" width="120" height="40" class="process"/>
+  <text x="390" y="100" class="text">Extract Service Info</text>
+  
+  <!-- Map Query Parameters -->
+  <rect x="480" y="80" width="120" height="40" class="process"/>
+  <text x="540" y="100" class="text">Map Query Parameters</text>
+  
+  <!-- Return Structure -->
+  <rect x="630" y="80" width="100" height="40" class="response"/>
+  <text x="680" y="100" class="text">Return Structure</text>
+  
+  <!-- Client -->
+  <rect x="630" y="140" width="100" height="40" class="node"/>
+  <text x="680" y="160" class="text">Client</text>
+  
+  <!-- Arrows -->
+  <line x1="150" y1="100" x2="180" y2="100" class="arrow"/>
+  <line x1="300" y1="100" x2="330" y2="100" class="arrow"/>
+  <line x1="450" y1="100" x2="480" y2="100" class="arrow"/>
+  <line x1="600" y1="100" x2="630" y2="100" class="arrow"/>
+  <line x1="680" y1="120" x2="680" y2="140" class="arrow"/>
+  
+  <!-- Labels -->
+  <text x="165" y="85" class="label">URL Input</text>
+  <text x="315" y="85" class="label">Components</text>
+  <text x="435" y="85" class="label">Service Info</text>
+  <text x="585" y="85" class="label">Parameters</text>
+  <text x="665" y="130" class="label">Response</text>
+</svg> 

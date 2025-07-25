@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  web:
+    build: ..
+    command: hypercorn app.main:app --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    environment:
+      - TRINO_HOST=host
+      - TRINO_PORT=port
+      - TRINO_USER=user
+      - TRINO_PASS=pass
+      - LOGGING_NAME=app_name
+      - X_API_KEY=productapikey
+      - IS_VIRTUAL_HOST=proxyvirtualhost
+      - IS_VIRTUAL_PORT=proxyvirtualport
+      - SAP_USERNAME=username
+      - SAP_PASSWORD=password
+      - SAP_CLIENT=100
+      - SAP_LANGUAGE=EN
+      - SAP_AUTH_URL=https://sap-auth-url
+      - SAP_BASE_URL=https://sap-base-url

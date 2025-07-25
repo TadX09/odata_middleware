@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .node { fill: #e1d5e7; stroke: #9673a6; stroke-width: 2; rx: 8; ry: 8; }
+      .decision { fill: #fff2cc; stroke: #d6b656; stroke-width: 2; }
+      .endpoint { fill: #d5e8d4; stroke: #82b366; stroke-width: 2; rx: 8; ry: 8; }
+      .process { fill: #ffe6cc; stroke: #d79b00; stroke-width: 2; rx: 8; ry: 8; }
+      .response { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 2; rx: 8; ry: 8; }
+      .text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Client -->
+  <rect x="50" y="180" width="100" height="40" class="node"/>
+  <text x="100" y="200" class="text">Cliente</text>
+  
+  <!-- FastAPI App -->
+  <rect x="200" y="180" width="120" height="40" class="node"/>
+  <text x="260" y="200" class="text">FastAPI App</text>
+  
+  <!-- Decision -->
+  <polygon points="400,180 420,200 400,220 380,200" class="decision"/>
+  <text x="400" y="200" class="text">Endpoint?</text>
+  
+  <!-- Endpoints -->
+  <rect x="450" y="50" width="120" height="30" class="endpoint"/>
+  <text x="510" y="65" class="text">Health Check</text>
+  
+  <rect x="450" y="100" width="120" height="30" class="endpoint"/>
+  <text x="510" y="115" class="text">Execute OData</text>
+  
+  <rect x="450" y="150" width="120" height="30" class="endpoint"/>
+  <text x="510" y="165" class="text">Generate URL</text>
+  
+  <rect x="450" y="200" width="120" height="30" class="endpoint"/>
+  <text x="510" y="215" class="text">Parse URL</text>
+  
+  <!-- Processes -->
+  <rect x="600" y="50" width="80" height="30" class="process"/>
+  <text x="640" y="65" class="text">Return Status</text>
+  
+  <rect x="600" y="100" width="80" height="30" class="process"/>
+  <text x="640" y="115" class="text">Process Request</text>
+  
+  <rect x="600" y="150" width="80" height="30" class="process"/>
+  <text x="640" y="165" class="text">Build URL</text>
+  
+  <rect x="600" y="200" width="80" height="30" class="process"/>
+  <text x="640" y="215" class="text">Parse URL</text>
+  
+  <!-- Response -->
+  <rect x="720" y="125" width="60" height="50" class="response"/>
+  <text x="750" y="150" class="text">Response</text>
+  
+  <!-- Arrows -->
+  <line x1="150" y1="200" x2="200" y2="200" class="arrow"/>
+  <line x1="320" y1="200" x2="380" y2="200" class="arrow"/>
+  
+  <!-- Decision arrows -->
+  <line x1="400" y1="180" x2="450" y2="65" class="arrow"/>
+  <line x1="400" y1="200" x2="450" y2="115" class="arrow"/>
+  <line x1="400" y1="200" x2="450" y2="165" class="arrow"/>
+  <line x1="400" y1="200" x2="450" y2="215" class="arrow"/>
+  
+  <!-- Process arrows -->
+  <line x1="570" y1="65" x2="600" y2="65" class="arrow"/>
+  <line x1="570" y1="115" x2="600" y2="115" class="arrow"/>
+  <line x1="570" y1="165" x2="600" y2="165" class="arrow"/>
+  <line x1="570" y1="215" x2="600" y2="215" class="arrow"/>
+  
+  <!-- To response -->
+  <line x1="680" y1="65" x2="720" y2="125" class="arrow"/>
+  <line x1="680" y1="115" x2="720" y2="125" class="arrow"/>
+  <line x1="680" y1="165" x2="720" y2="125" class="arrow"/>
+  <line x1="680" y1="215" x2="720" y2="125" class="arrow"/>
+  
+  <!-- Back to client -->
+  <line x1="720" y1="175" x2="150" y2="220" class="arrow"/>
+  
+  <!-- Labels -->
+  <text x="175" y="190" class="label">HTTP Request</text>
+  <text x="390" y="190" class="label">Route</text>
+  <text x="435" y="45" class="label">GET /helpcheck</text>
+  <text x="435" y="95" class="label">POST /execute-odata</text>
+  <text x="435" y="145" class="label">POST /generate-odata-url</text>
+  <text x="435" y="195" class="label">GET /parse-odata-url</text>
+</svg> 

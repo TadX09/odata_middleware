@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .node { fill: #e1d5e7; stroke: #9673a6; stroke-width: 2; rx: 8; ry: 8; }
+      .decision { fill: #fff2cc; stroke: #d6b656; stroke-width: 2; }
+      .process { fill: #ffe6cc; stroke: #d79b00; stroke-width: 2; rx: 8; ry: 8; }
+      .response { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 2; rx: 8; ry: 8; }
+      .text { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; dominant-baseline: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 8px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Client -->
+  <rect x="50" y="280" width="80" height="40" class="node"/>
+  <text x="90" y="300" class="text">Cliente</text>
+  
+  <!-- Decision -->
+  <polygon points="180,280 200,300 180,320 160,300" class="decision"/>
+  <text x="180" y="300" class="text">Use Case?</text>
+  
+  <!-- Use Cases -->
+  <rect x="220" y="50" width="100" height="30" class="process"/>
+  <text x="270" y="65" class="text">Query Data</text>
+  
+  <rect x="220" y="100" width="100" height="30" class="process"/>
+  <text x="270" y="115" class="text">Create Data</text>
+  
+  <rect x="220" y="150" width="100" height="30" class="process"/>
+  <text x="270" y="165" class="text">Update Data</text>
+  
+  <rect x="220" y="200" width="100" height="30" class="process"/>
+  <text x="270" y="215" class="text">Delete Data</text>
+  
+  <rect x="220" y="250" width="100" height="30" class="process"/>
+  <text x="270" y="265" class="text">Build URL</text>
+  
+  <rect x="220" y="300" width="100" height="30" class="process"/>
+  <text x="270" y="315" class="text">Analyze URL</text>
+  
+  <rect x="220" y="350" width="100" height="30" class="process"/>
+  <text x="270" y="365" class="text">Check Status</text>
+  
+  <!-- Endpoints -->
+  <rect x="350" y="50" width="120" height="30" class="process"/>
+  <text x="410" y="65" class="text">Execute OData GET</text>
+  
+  <rect x="350" y="100" width="120" height="30" class="process"/>
+  <text x="410" y="115" class="text">Execute OData POST</text>
+  
+  <rect x="350" y="150" width="120" height="30" class="process"/>
+  <text x="410" y="165" class="text">Execute OData PATCH/PUT</text>
+  
+  <rect x="350" y="200" width="120" height="30" class="process"/>
+  <text x="410" y="215" class="text">Execute OData DELETE</text>
+  
+  <rect x="350" y="250" width="120" height="30" class="process"/>
+  <text x="410" y="265" class="text">Generate OData URL</text>
+  
+  <rect x="350" y="300" width="120" height="30" class="process"/>
+  <text x="410" y="315" class="text">Parse OData URL</text>
+  
+  <rect x="350" y="350" width="120" height="30" class="process"/>
+  <text x="410" y="365" class="text">Health Check</text>
+  
+  <!-- Responses -->
+  <rect x="500" y="50" width="80" height="30" class="response"/>
+  <text x="540" y="65" class="text">SAP Response</text>
+  
+  <rect x="500" y="100" width="80" height="30" class="response"/>
+  <text x="540" y="115" class="text">Created Entity</text>
+  
+  <rect x="500" y="150" width="80" height="30" class="response"/>
+  <text x="540" y="165" class="text">Updated Entity</text>
+  
+  <rect x="500" y="200" width="80" height="30" class="response"/>
+  <text x="540" y="215" class="text">Deletion Status</text>
+  
+  <rect x="500" y="250" width="80" height="30" class="response"/>
+  <text x="540" y="265" class="text">Generated URL</text>
+  
+  <rect x="500" y="300" width="80" height="30" class="response"/>
+  <text x="540" y="315" class="text">Parsed Structure</text>
+  
+  <rect x="500" y="350" width="80" height="30" class="response"/>
+  <text x="540" y="365" class="text">Service Status</text>
+  
+  <!-- Final Client -->
+  <rect x="620" y="200" width="80" height="40" class="node"/>
+  <text x="660" y="220" class="text">Client</text>
+  
+  <!-- Arrows -->
+  <line x1="130" y1="300" x2="160" y2="300" class="arrow"/>
+  
+  <!-- Decision arrows -->
+  <line x1="180" y1="280" x2="220" y2="65" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="115" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="165" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="215" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="265" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="315" class="arrow"/>
+  <line x1="180" y1="300" x2="220" y2="365" class="arrow"/>
+  
+  <!-- Process arrows -->
+  <line x1="320" y1="65" x2="350" y2="65" class="arrow"/>
+  <line x1="320" y1="115" x2="350" y2="115" class="arrow"/>
+  <line x1="320" y1="165" x2="350" y2="165" class="arrow"/>
+  <line x1="320" y1="215" x2="350" y2="215" class="arrow"/>
+  <line x1="320" y1="265" x2="350" y2="265" class="arrow"/>
+  <line x1="320" y1="315" x2="350" y2="315" class="arrow"/>
+  <line x1="320" y1="365" x2="350" y2="365" class="arrow"/>
+  
+  <!-- Response arrows -->
+  <line x1="470" y1="65" x2="500" y2="65" class="arrow"/>
+  <line x1="470" y1="115" x2="500" y2="115" class="arrow"/>
+  <line x1="470" y1="165" x2="500" y2="165" class="arrow"/>
+  <line x1="470" y1="215" x2="500" y2="215" class="arrow"/>
+  <line x1="470" y1="265" x2="500" y2="265" class="arrow"/>
+  <line x1="470" y1="315" x2="500" y2="315" class="arrow"/>
+  <line x1="470" y1="365" x2="500" y2="365" class="arrow"/>
+  
+  <!-- To final client -->
+  <line x1="580" y1="65" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="115" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="165" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="215" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="265" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="315" x2="620" y2="200" class="arrow"/>
+  <line x1="580" y1="365" x2="620" y2="200" class="arrow"/>
+  
+  <!-- Labels -->
+  <text x="155" y="290" class="label">Request</text>
+  <text x="195" y="45" class="label">GET</text>
+  <text x="195" y="95" class="label">POST</text>
+  <text x="195" y="145" class="label">PATCH/PUT</text>
+  <text x="195" y="195" class="label">DELETE</text>
+  <text x="195" y="245" class="label">Generate</text>
+  <text x="195" y="295" class="label">Parse</text>
+  <text x="195" y="345" class="label">Health</text>
+</svg> 
