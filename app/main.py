@@ -24,7 +24,7 @@ from app.bussiness_logic.endpoints import business_logic_router
 from app.exception import exception_handler, DoesNotExist, does_not_exist_handler
 from app.env_variables import LOGGING_NAME
 
-# API Version configuration
+# API version configuration
 API_VERSION = "1.0.0"
 API_PREFIX = "/api/v1"
 

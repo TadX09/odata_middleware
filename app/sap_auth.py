@@ -3,14 +3,15 @@ import base64
 import requests
 from typing import Dict, Optional
 from datetime import datetime, timedelta
+from app.env_variables import SAP_USERNAME, SAP_PASSWORD, SAP_CLIENT, SAP_LANGUAGE, SAP_AUTH_URL
 
 class SAPAuth:
     def __init__(self):
-        self.sap_username = os.getenv('SAP_USERNAME')
-        self.sap_password = os.getenv('SAP_PASSWORD')
-        self.sap_client = os.getenv('SAP_CLIENT', '100')
-        self.sap_language = os.getenv('SAP_LANGUAGE', 'EN')
-        self.sap_auth_url = os.getenv('SAP_AUTH_URL')
+        self.sap_username = SAP_USERNAME
+        self.sap_password = SAP_PASSWORD
+        self.sap_client = SAP_CLIENT
+        self.sap_language = SAP_LANGUAGE
+        self.sap_auth_url = SAP_AUTH_URL
         self.token_cache = {}
         self.token_expiry = {}
     

@@ -1,0 +1,1132 @@
+{
+  "info": {
+    "name": "SAP OData Middleware API",
+    "description": "Complete collection for testing SAP OData Middleware with Business Partner entity examples",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.1.0"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "SAP_SERVER",
+      "value": "https://intds4.test.apimanagement.us10.hana.ondemand.com",
+      "type": "string"
+    },
+    {
+      "key": "SAP_SERVICE",
+      "value": "API_BUSINESS_PARTNER_QAS_220",
+      "type": "string"
+    },
+    {
+      "key": "SAP_ENTITY",
+      "value": "A_BusinessPartner",
+      "type": "string"
+    },
+    {
+      "key": "SAP_KEY",
+      "value": "234277",
+      "type": "string"
+    },
+    {
+      "key": "INTEGRATION_SUITE_API_KEY",
+      "value": "your_integration_suite_api_key_here",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  },
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/healthcheck",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "healthcheck"]
+            },
+            "description": "Verifies that the service is active and responding"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Execute OData",
+      "item": [
+        {
+          "name": "Basic Business Partner Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName,BusinessPartnerName,SearchTerm2\",\n  \"filter\": \"SearchTerm2 eq '{{SAP_KEY}}'\"\n}"
+            },
+            "description": "Execute a basic query to retrieve Business Partner information"
+          },
+          "response": []
+        },
+        {
+          "name": "Business Partner with Navigation Properties",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": [\n    {\n      \"entity\": \"to_BusinessPartnerBank\",\n      \"key\": \"10\"\n    }\n  ],\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\",\n  \"expand\": \"to_BusinessPartnerBank\"\n}"
+            },
+            "description": "Execute query with navigation properties to access related Business Partner Bank data"
+          },
+          "response": []
+        },
+        {
+          "name": "Direct URL Execution",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"odata_url\": \"{{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}?$select=BusinessPartner,BusinessPartnerFullName&$filter=SearchTerm2 eq '{{SAP_KEY}}'\",\n  \"http_method\": \"GET\"\n}"
+            },
+            "description": "Execute OData request using a direct URL instead of structured parameters"
+          },
+          "response": []
+        },
+        {
+          "name": "XML Response Format",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"format\": \"xml\"\n}"
+            },
+            "description": "Execute query and receive response in XML format"
+          },
+          "response": []
+        },
+        {
+          "name": "Complex Navigation Path",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": [\n    {\n      \"entity\": \"to_BusinessPartnerBank\",\n      \"key\": \"10\"\n    },\n    {\n      \"entity\": \"to_Bank\",\n      \"filter\": \"BankCountry eq 'US'\"\n    }\n  ],\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\",\n  \"expand\": \"to_BusinessPartnerBank/to_Bank\"\n}"
+            },
+            "description": "Execute query with complex navigation path through multiple entities"
+          },
+          "response": []
+        },
+        {
+          "name": "Pagination and Filtering",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName,BusinessPartnerName\",\n  \"filter\": \"BusinessPartnerType eq '2'\",\n  \"top\": 10,\n  \"skip\": 0,\n  \"orderby\": \"BusinessPartnerFullName asc\",\n  \"inlinecount\": \"allpages\"\n}"
+            },
+            "description": "Execute query with pagination, filtering, and sorting"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Business Partner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"POST\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"payload\": {\n    \"BusinessPartnerFullName\": \"New Test Partner\",\n    \"BusinessPartnerName\": \"Test Partner\",\n    \"BusinessPartnerType\": \"2\",\n    \"SearchTerm1\": \"TEST\",\n    \"SearchTerm2\": \"123456\"\n  }\n}"
+            },
+            "description": "Create a new Business Partner record"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Business Partner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"PATCH\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"payload\": {\n    \"BusinessPartnerFullName\": \"Updated Test Partner\",\n    \"SearchTerm1\": \"UPDATED\"\n  }\n}"
+            },
+            "description": "Update an existing Business Partner record"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Business Partner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata?auth_type=basic&parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"],
+              "query": [
+                {
+                  "key": "auth_type",
+                  "value": "basic"
+                },
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"DELETE\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\"\n}"
+            },
+            "description": "Delete a Business Partner record"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Execute OData Integration Suite",
+      "item": [
+        {
+          "name": "Basic Business Partner Query via IS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                "description": "Integration Suite API Key"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata-is?parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata-is"],
+              "query": [
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName,BusinessPartnerName,SearchTerm2\",\n  \"filter\": \"SearchTerm2 eq '{{SAP_KEY}}'\"\n}"
+            },
+            "description": "Execute a basic query via Integration Suite to retrieve Business Partner information"
+          },
+          "response": []
+        },
+        {
+          "name": "Direct URL Execution via IS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                "description": "Integration Suite API Key"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata-is?parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata-is"],
+              "query": [
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"odata_url\": \"{{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}?$select=BusinessPartner,BusinessPartnerFullName&$filter=SearchTerm2 eq '{{SAP_KEY}}'\",\n  \"http_method\": \"GET\"\n}"
+            },
+            "description": "Execute OData request via Integration Suite using a direct URL instead of structured parameters"
+          },
+          "response": []
+        },
+        {
+          "name": "Business Partner with Navigation via IS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                "description": "Integration Suite API Key"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata-is?parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata-is"],
+              "query": [
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": [\n    {\n      \"entity\": \"to_BusinessPartnerBank\",\n      \"key\": \"10\"\n    }\n  ],\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\",\n  \"expand\": \"to_BusinessPartnerBank\"\n}"
+            },
+            "description": "Execute query via Integration Suite with navigation properties to access related Business Partner Bank data"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Business Partner via IS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                "description": "Integration Suite API Key"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata-is?parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata-is"],
+              "query": [
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"POST\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"payload\": {\n    \"BusinessPartnerFullName\": \"New Test Partner IS\",\n    \"BusinessPartnerName\": \"Test Partner IS\",\n    \"BusinessPartnerType\": \"2\",\n    \"SearchTerm1\": \"TEST_IS\",\n    \"SearchTerm2\": \"123456\"\n  }\n}"
+            },
+            "description": "Create a new Business Partner record via Integration Suite"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Business Partner via IS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                "description": "Integration Suite API Key"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata-is?parse_response=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata-is"],
+              "query": [
+                {
+                  "key": "parse_response",
+                  "value": "true"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"PATCH\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"payload\": {\n    \"BusinessPartnerFullName\": \"Updated Test Partner IS\",\n    \"SearchTerm1\": \"UPDATED_IS\"\n  }\n}"
+            },
+            "description": "Update an existing Business Partner record via Integration Suite"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Generate OData URL",
+      "item": [
+        {
+          "name": "Basic URL Generation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/generate-odata-url",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "generate-odata-url"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName,BusinessPartnerName\",\n  \"filter\": \"SearchTerm2 eq '{{SAP_KEY}}'\"\n}"
+            },
+            "description": "Generate a complete OData URL from structured parameters"
+          },
+          "response": []
+        },
+        {
+          "name": "URL with Navigation Properties",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/generate-odata-url",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "generate-odata-url"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": [\n    {\n      \"entity\": \"to_BusinessPartnerBank\",\n      \"key\": \"10\"\n    }\n  ],\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+            },
+            "description": "Generate OData URL with navigation properties"
+          },
+          "response": []
+        },
+        {
+          "name": "URL with Complex Query Parameters",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/generate-odata-url",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "generate-odata-url"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName,BusinessPartnerName\",\n  \"filter\": \"BusinessPartnerType eq '2'\",\n  \"top\": 10,\n  \"skip\": 0,\n  \"orderby\": \"BusinessPartnerFullName asc\",\n  \"inlinecount\": \"allpages\",\n  \"expand\": \"to_BusinessPartnerBank\"\n}"
+            },
+            "description": "Generate OData URL with complex query parameters including pagination and expansion"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Parse OData URL",
+      "item": [
+        {
+          "name": "Parse Valid URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/parse-odata-url?full_url={{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}?$select=BusinessPartner,BusinessPartnerFullName,BusinessPartnerName,PersonFullName,SearchTerm2,to_Supplier,BusinessPartnerGrouping,to_BusinessPartnerBank&$filter=SearchTerm2 eq '{{SAP_KEY}}'",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "parse-odata-url"],
+              "query": [
+                {
+                  "key": "full_url",
+                  "value": "{{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}?$select=BusinessPartner,BusinessPartnerFullName,BusinessPartnerName,PersonFullName,SearchTerm2,to_Supplier,BusinessPartnerGrouping,to_BusinessPartnerBank&$filter=SearchTerm2 eq '{{SAP_KEY}}'"
+                }
+              ]
+            },
+            "description": "Parse a valid OData URL into its components"
+          },
+          "response": []
+        },
+        {
+          "name": "Parse URL with Navigation Properties",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/parse-odata-url?full_url={{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}('{{SAP_KEY}}')/to_BusinessPartnerBank('10')?$select=BusinessPartner,BusinessPartnerFullName",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "parse-odata-url"],
+              "query": [
+                {
+                  "key": "full_url",
+                  "value": "{{SAP_SERVER}}/{{SAP_SERVICE}}/{{SAP_ENTITY}}('{{SAP_KEY}}')/to_BusinessPartnerBank('10')?$select=BusinessPartner,BusinessPartnerFullName"
+                }
+              ]
+            },
+            "description": "Parse OData URL containing navigation properties"
+          },
+          "response": []
+        },
+        {
+          "name": "Parse Invalid URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/parse-odata-url?full_url=not-a-valid-url",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "parse-odata-url"],
+              "query": [
+                {
+                  "key": "full_url",
+                  "value": "not-a-valid-url"
+                }
+              ]
+            },
+            "description": "Parse an invalid URL to test error handling"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Testing",
+      "item": [
+        {
+          "name": "Validation Error - Invalid URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"invalid-url\",\n  \"source_entity\": \"{{SAP_ENTITY}}\"\n}"
+            },
+            "description": "Test validation error with invalid base URL"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Required Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\"\n}"
+            },
+            "description": "Test error handling with missing required fields"
+          },
+          "response": []
+        },
+        {
+          "name": "Non-existent Entity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/v1/execute-odata",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "v1", "execute-odata"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"99999\"\n}"
+            },
+            "description": "Test 404 error with non-existent entity"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Testing Workflows",
+      "item": [
+        {
+          "name": "Workflow 1: URL Generation and Execution",
+          "item": [
+            {
+              "name": "Step 1: Generate URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/generate-odata-url",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "generate-odata-url"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+                },
+                "description": "Step 1: Generate OData URL from parameters"
+              },
+              "response": []
+            },
+            {
+              "name": "Step 2: Execute Generated URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/execute-odata",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "execute-odata"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"odata_url\": \"{{generated_url}}\",\n  \"http_method\": \"GET\"\n}",
+                  "description": "Use the URL generated in Step 1"
+                },
+                "description": "Step 2: Execute the generated URL"
+              },
+              "response": []
+            },
+            {
+              "name": "Step 3: Parse the URL",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/parse-odata-url?full_url={{generated_url}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "parse-odata-url"],
+                  "query": [
+                    {
+                      "key": "full_url",
+                      "value": "{{generated_url}}"
+                    }
+                  ]
+                },
+                "description": "Step 3: Parse the generated URL back into components"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Workflow 2: Navigation Property Testing",
+          "item": [
+            {
+              "name": "Basic Navigation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/execute-odata",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "execute-odata"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": \"to_BusinessPartnerBank\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+                },
+                "description": "Test basic navigation property (legacy string format)"
+              },
+              "response": []
+            },
+            {
+              "name": "Complex Navigation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/execute-odata",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "execute-odata"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": [\n    {\n      \"entity\": \"to_BusinessPartnerBank\",\n      \"key\": \"10\"\n    },\n    {\n      \"entity\": \"to_Bank\",\n      \"filter\": \"BankCountry eq 'US'\"\n    }\n  ],\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+                },
+                "description": "Test complex navigation with multiple steps and filters"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Workflow 3: Integration Suite Testing",
+          "item": [
+            {
+              "name": "IS Basic Query",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "apikey",
+                    "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                    "description": "Integration Suite API Key"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/execute-odata-is",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "execute-odata-is"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+                },
+                "description": "Test basic Integration Suite functionality"
+              },
+              "response": []
+            },
+            {
+              "name": "IS Navigation Query",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "apikey",
+                    "value": "{{INTEGRATION_SUITE_API_KEY}}",
+                    "description": "Integration Suite API Key"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/api/v1/execute-odata-is",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["api", "v1", "execute-odata-is"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"http_method\": \"GET\",\n  \"base_url\": \"{{SAP_SERVER}}\",\n  \"service_name\": \"{{SAP_SERVICE}}\",\n  \"source_entity\": \"{{SAP_ENTITY}}\",\n  \"source_key\": \"{{SAP_KEY}}\",\n  \"navigation_property\": \"to_BusinessPartnerBank\",\n  \"select\": \"BusinessPartner,BusinessPartnerFullName\"\n}"
+                },
+                "description": "Test Integration Suite with navigation properties"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set default headers for all requests",
+          "pm.request.headers.add({\n    key: 'Content-Type',\n    value: 'application/json'\n});",
+          "pm.request.headers.add({\n    key: 'Accept',\n    value: 'application/json'\n});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Basic response validation",
+          "pm.test(\"Status code is 200\", function () {",
+          "    pm.response.to.have.status(200);",
+          "});",
+          "",
+          "pm.test(\"Response has data property\", function () {",
+          "    const jsonData = pm.response.json();",
+          "    pm.expect(jsonData).to.have.property('data');",
+          "});",
+          "",
+          "pm.test(\"Response has metadata property\", function () {",
+          "    const jsonData = pm.response.json();",
+          "    pm.expect(jsonData).to.have.property('metadata');",
+          "});",
+          "",
+          "// Store generated URL for workflow testing",
+          "if (pm.response.json().data && pm.response.json().data.odata_url) {",
+          "    pm.environment.set('generated_url', pm.response.json().data.odata_url);",
+          "}"
+        ]
+      }
+    }
+  ]
+}
