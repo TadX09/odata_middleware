@@ -1,6 +1,7 @@
 
 from datetime import datetime,timezone
 from typing import Union
+from urllib.parse import urlparse
 from fastapi import APIRouter, HTTPException, Query, Request
 
 from app.bussiness_logic.get_businesss_logic import _build_base_structure, _extract_service_info, _get_path_parts, _map_query_parameters, _parse_query_params, _parse_url_components
@@ -11,6 +12,7 @@ from app.bussiness_logic.post_business_logic import (
     TargetEntityCreationRequest,
     _build_entity_path,
     _build_full_url,
+    _build_odata_request_url,
     _build_query_string,
     _build_request_url,
     _build_target_url,
@@ -19,22 +21,25 @@ from app.bussiness_logic.post_business_logic import (
     _get_api_path,
     _get_sap_headers,
     _process_response,
+    _validate_execute_request,
     execute_direct_request,
     execute_odata_request,
     generate_target_entity_request
 )
 
+from app.integrationsuite import ISOperations
 from app.xm_json_response import JsonOrXmlResponse
 from app.sap_auth import sap_auth
+from app.sap_response_parser import SAPResponseParser
 
 business_logic_router = APIRouter()
 
-@business_logic_router.get("/helpcheck", 
+@business_logic_router.get("/healthcheck", 
     summary="Basic Health Check",
     description="Verifies that the service is active and responding",
     tags=["System"]
 )
-def helpcheck(request: Request):
+def healthcheck(request: Request):
     """
     Simple health check endpoint that verifies the service is functioning.
     """
@@ -199,3 +204,80 @@ def execute_odata(request: Union[ExecuteODataRequest, ODataRequest], request_obj
         raise HTTPException(status_code=403, detail="Insufficient permissions")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@business_logic_router.post("/execute-odata-is",
+    summary="Execute OData request through Integration Suite",
+    description="Executes an OData request through SAP Integration Suite with proper headers",
+    tags=["OData Operations"]
+)
+async def execute_odata_is(
+    request: Union[ExecuteODataRequest, ODataRequest],
+    request_obj: Request,
+    parse_response: bool = Query(True, description="Whether to parse the SAP response"),
+):
+    """
+    Executes an OData request through SAP Integration Suite proxy with proper authentication headers.
+
+    Args:
+        request: The OData request details (ExecuteODataRequest or ODataRequest)
+        request_obj: The FastAPI request object
+        parse_response: Whether to parse the SAP response
+
+    Returns:
+        200: Successfully executed request
+        400: Invalid request parameters
+        401: Authentication failed
+        403: Insufficient permissions
+        404: Entity not found
+        422: Validation error
+        500: Internal server error
+        503: Integration Suite service unavailable
+
+    Example request:
+    {
+        "url": "https://sap-server.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder",
+        "method": "GET",
+        "filters": {
+            "SalesOrderID": "12345"
+        },
+        "select": ["SalesOrderID", "CustomerName"],
+        "expand": ["to_Items"]
+    }
+    """
+    try:
+        # Validate request type is supported
+        if not isinstance(request, (ExecuteODataRequest, ODataRequest)):
+            raise HTTPException(status_code=400, detail="Invalid request type")
+
+        # Get only Integration Suite API key headers
+        sap_headers = {
+            k: v for k, v in request_obj.headers.items() 
+            if k.lower() in {'apikey', 'x-api-key', 'api-key'}
+        }
+        
+        # Handle direct execution vs target entity request    
+        if isinstance(request, ExecuteODataRequest):
+            _validate_execute_request(request)
+            full_url = str(request.odata_url)
+            response = _execute_request(request, full_url, sap_headers)
+            response_data = _process_response(response, "is", parse_response)
+            return JsonOrXmlResponse(content=response_data, request=request_obj)
+        else:
+            # Generate target entity request if needed
+            if request.entity_type:
+                request = generate_target_entity_request(request)
+                
+            full_url = _build_request_url(request)
+            response = _execute_request(request, full_url, sap_headers)
+            response_data = _process_response(response, "is", parse_response)
+            return JsonOrXmlResponse(content=response_data, request=request_obj)
+
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except ConnectionError:
+        raise HTTPException(status_code=503, detail="Integration Suite service unavailable") 
+    except PermissionError as e:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+

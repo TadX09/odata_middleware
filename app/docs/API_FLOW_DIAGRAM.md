@@ -7,8 +7,9 @@ flowchart TD
     A[Cliente] --> B[FastAPI App]
     B --> C{Endpoint?}
 
-    C -->|GET /helpcheck| D[Health Check]
+    C -->|GET /healthcheck| D[Health Check]
     C -->|POST /execute-odata| E[Execute OData]
+    C -->|POST /execute-odata-is| E2[Execute OData IS]
     C -->|POST /generate-odata-url| F[Generate URL]
     C -->|GET /parse-odata-url| G[Parse URL]
 
@@ -19,6 +20,11 @@ flowchart TD
     E1 --> E2[Call SAP]
     E2 --> E3[Process Response]
     E3 --> Z
+
+    E2 --> E2A[Process IS Request]
+    E2A --> E2B[Call Integration Suite]
+    E2B --> E2C[Process IS Response]
+    E2C --> Z
 
     F --> F1[Build URL]
     F1 --> Z
@@ -31,7 +37,7 @@ flowchart TD
 
 ## 🔄 Flujo Detallado por Endpoint
 
-### 1. Health Check (`GET /helpcheck`)
+### 1. Health Check (`GET /healthcheck`)
 
 ```mermaid
 flowchart LR
@@ -77,7 +83,36 @@ flowchart TD
 - Procesa respuestas JSON/XML
 - Maneja errores de SAP
 
-### 3. Generate OData URL (`POST /generate-odata-url`)
+### 3. Execute OData Integration Suite (`POST /execute-odata-is`)
+
+```mermaid
+flowchart TD
+    A[Client Request] --> B{Request Type?}
+
+    B -->|ExecuteODataRequest| C[Direct URL]
+    B -->|ODataRequest| D[Structured Request]
+
+    C --> E[Build Request URL]
+    D --> F[Build OData URL]
+    F --> E
+
+    E --> G[Get API Key Headers]
+    G --> H[Execute HTTP Request]
+    H --> I[Integration Suite]
+    I --> J[Process Response]
+    J --> K[Return Response]
+    K --> L[Client]
+```
+
+**Funcionalidad:**
+
+- Ejecuta peticiones OData a través de SAP Integration Suite
+- Usa autenticación por API Key en lugar de Basic Auth
+- Optimizado para entornos de Integration Suite
+- Filtra automáticamente headers de API Key
+- Procesa respuestas con identificador "is"
+
+### 4. Generate OData URL (`POST /generate-odata-url`)
 
 ```mermaid
 flowchart LR
@@ -213,12 +248,13 @@ flowchart TD
 
 ## 📋 Resumen de Endpoints
 
-| Endpoint              | Método | Función        | Entrada                    | Salida              |
-| --------------------- | ------ | -------------- | -------------------------- | ------------------- |
-| `/helpcheck`          | GET    | Health Check   | Ninguna                    | Estado del servicio |
-| `/execute-odata`      | POST   | Ejecutar OData | Request estructurado o URL | Respuesta de SAP    |
-| `/generate-odata-url` | POST   | Generar URL    | Parámetros estructurados   | URL OData completa  |
-| `/parse-odata-url`    | GET    | Parsear URL    | URL OData                  | Estructura parseada |
+| Endpoint              | Método | Función                            | Entrada                    | Salida                  |
+| --------------------- | ------ | ---------------------------------- | -------------------------- | ----------------------- |
+| `/helpcheck`          | GET    | Health Check                       | Ninguna                    | Estado del servicio     |
+| `/execute-odata`      | POST   | Ejecutar OData (SAP Directo)       | Request estructurado o URL | Respuesta de SAP        |
+| `/execute-odata-is`   | POST   | Ejecutar OData (Integration Suite) | Request estructurado o URL | Respuesta de SAP via IS |
+| `/generate-odata-url` | POST   | Generar URL                        | Parámetros estructurados   | URL OData completa      |
+| `/parse-odata-url`    | GET    | Parsear URL                        | URL OData                  | Estructura parseada     |
 
 ## 🔄 Flujo de Datos General
 
